@@ -1,7 +1,14 @@
 package ntn.assignment1;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import java.util.List;
 
 public class MainActivity extends Activity
 {
@@ -11,31 +18,26 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        DatabaseHandler db = new DatabaseHandler(this);
+        Log.d("Insert: ", "Inserting...");
+        //Default value
+        db.addGroup(new DTO_Group("MobileCourse"));
+        db.addGroup(new DTO_Group("ProcessTool"));
+        db.addGroup(new DTO_Group("UserInterface"));
+        db.addGroup(new DTO_Group("Database"));
+        
+        //Reading 
+        Log.d("Reading: ", "Reading all contacts.."); 
+        List<DTO_Group> lst_groups = db.getGroups();
+        ListView listview_Group = (ListView) findViewById(R.id.listViewGroup);
+        ArrayAdapter adapter_group = new ArrayAdapter(this, android.R.layout.simple_list_item_2,android.R.id.text2, lst_groups);
+        listview_Group.setAdapter(adapter_group);
+        listview_Group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                parent.getSelectedItem();
+                Intent intent;
+            }
+        });
     }
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.main);
-//         
-//        DatabaseHandler db = new DatabaseHandler(this);
-//         
-//        /**
-//         * CRUD Operations
-//         * */
-//        // Inserting Contacts
-//        Log.d("Insert: ", "Inserting .."); 
-//        db.addContact(new Contact("Ravi", "9100000000"));        
-//        db.addContact(new Contact("Srinivas", "9199999999"));
-//        db.addContact(new Contact("Tommy", "9522222222"));
-//        db.addContact(new Contact("Karthik", "9533333333"));
-//         
-//        // Reading all contacts
-//        Log.d("Reading: ", "Reading all contacts.."); 
-//        List<Contact> contacts = db.getAllContacts();       
-//         
-//        for (Contact cn : contacts) {
-//            String log = "Id: "+cn.getID()+" ,Name: " + cn.getName() + " ,Phone: " + cn.getPhoneNumber();
-//                // Writing Contacts to log
-//        Log.d("Name: ", log);
-//    }
-//    }
 }

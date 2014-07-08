@@ -21,6 +21,11 @@ public class DTO_Group {
     public DTO_Group() {
     }
 
+    public DTO_Group(String _title) {
+        this._title = _title;
+        this._remove = false;
+    }
+
     public DTO_Group(String _id, String _title, boolean _remove) {
         this._id = _id;
         this._title = _title;
