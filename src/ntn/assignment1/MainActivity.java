@@ -35,8 +35,10 @@ public class MainActivity extends Activity
         listview_Group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                parent.getSelectedItem();
-                Intent intent;
+                DTO_Group selectedGroup = (DTO_Group) parent.getSelectedItem();
+                Bundle bundle = new Bundle();
+                Intent intent = new Intent(MainActivity.this, TaskActivity.class);
+                startActivity(intent);
             }
         });
     }
