@@ -20,10 +20,10 @@ public class MainActivity extends Activity {
         DatabaseHandler db = new DatabaseHandler(this);
         Log.d("Insert: ", "Inserting...");
         //Default value
-        db.addGroup(new DTO_Group("MobileCourse"));
-        db.addGroup(new DTO_Group("ProcessTool"));
-        db.addGroup(new DTO_Group("UserInterface"));
-        db.addGroup(new DTO_Group("Database"));
+//        db.addGroup(new DTO_Group("MobileCourse"));
+//        db.addGroup(new DTO_Group("ProcessTool"));
+//        db.addGroup(new DTO_Group("UserInterface"));
+//        db.addGroup(new DTO_Group("Database"));
 
         //Reading 
         Log.d("Reading: ", "Reading all group..");
@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
         listview_Group.setAdapter(adapter_group);
         listview_Group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DTO_Group selectedGroup = (DTO_Group) parent.getSelectedItem();
+                DTO_Group selectedGroup = (DTO_Group) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), TaskActivity.class);
                 intent.putExtra(Keys.groupID, selectedGroup.getId());
                 startActivity(intent);

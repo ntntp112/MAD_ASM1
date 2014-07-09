@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="C:\Users\NTN\AndroidStudioProjects\Assgnment_1.2\app\src\main\assets" />
+        <source path="C:\Users\NTN\AndroidStudioProjects\MAD_ASM1\app\src\main\assets" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="C:\Users\NTN\AndroidStudioProjects\Assgnment_1.2\app\src\debug\assets" />
+        <source path="C:\Users\NTN\AndroidStudioProjects\MAD_ASM1\app\src\debug\assets" />
     </dataSet>
 
 </merger>
