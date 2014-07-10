@@ -22,7 +22,7 @@ public class DTO_Group {
         this._title = _title;
     }
 
-    public DTO_Group(String _id, String _title, boolean _remove) {
+    public DTO_Group(String _id, String _title) {
         this._id = _id;
         this._title = _title;
     }

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.sql.Date;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -20,19 +21,20 @@ public class MainActivity extends Activity {
         DatabaseHandler db = new DatabaseHandler(this);
         Log.d("Insert: ", "Inserting...");
         //Default value
-//        db.addGroup(new DTO_Group("MobileCourse"));
-//        db.addGroup(new DTO_Group("ProcessTool"));
-//        db.addGroup(new DTO_Group("UserInterface"));
-//        db.addGroup(new DTO_Group("Database"));
+        db.addGroup(new DTO_Group("MobileCourse"));
+        db.addGroup(new DTO_Group("ProcessTool"));
+        db.addGroup(new DTO_Group("UserInterface"));
+        db.addGroup(new DTO_Group("Database"));
+        db.addTask(new DTO_Task("1", "Title1", new Date(195000), "Note", 1, "ntn@gmail.com", "Done"));
+        db.addTask(new DTO_Task("1", "Title234", new Date(195000), "Note", 1, "ntn@gmail.com", "Done"));
 
-        //Reading 
+        //Reading
         Log.d("Reading: ", "Reading all group..");
         List<DTO_Group> lst_groups = db.getGroups();
-        Log.d("Reading: ", "List size "+lst_groups.size());
-        ListView listview_Group = (ListView) findViewById(R.id.listViewGroup);
-        ArrayAdapter adapter_group = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text2, lst_groups);
-        listview_Group.setAdapter(adapter_group);
-        listview_Group.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView listviewGroup = (ListView) findViewById(R.id.listViewGroup);
+        ArrayAdapter adapterGroup = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, lst_groups);
+        listviewGroup.setAdapter(adapterGroup);
+        listviewGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DTO_Group selectedGroup = (DTO_Group) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), TaskActivity.class);
