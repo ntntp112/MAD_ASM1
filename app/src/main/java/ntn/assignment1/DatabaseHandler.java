@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_TASK = "tbl_task";
     private static final String QUERY_DROP_TASK = "DROP TABLE IF EXISTS " + TABLE_TASK;
     private static final String TBL_TASK_ID = "id";
-    private static final String TBL_TASK_GROUP = "group";
+    private static final String TBL_TASK_GROUP = "grouptask";
     private static final String TBL_TASK_TITLE = "title";
     private static final String TBL_TASK_DUEDATE = "duedate";
     private static final String TBL_TASK_NOTE = "note";
@@ -68,14 +69,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(QUERY_CREATE_GROUP);
         db.execSQL(QUERY_CREATE_TASK);
-        db.close();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(QUERY_DROP_TASK);
         db.execSQL(QUERY_DROP_GROUP);
-        onCreate(db);
     }
 
     //CRUD for GROUP
@@ -101,7 +100,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         DTO_Group group = new DTO_Group(String.valueOf(cursor.getInt(0)),
-                cursor.getString(1), Boolean.valueOf(cursor.getString(2)));
+                cursor.getString(1));
 
         db.close();
         return group;
@@ -128,7 +127,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return groups;
     }
 
-    public int updateContact(DTO_Group input) {
+    public int updateGroup(DTO_Group input) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -141,7 +140,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return result;
     }
 
-    public int deleteContact(DTO_Group input) {
+    public int deleteGroup(DTO_Group input) {
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete(TABLE_GROUP, TBL_GROUP_ID + " == ?",
                 new String[]{String.valueOf(input.getId())});
@@ -155,8 +154,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(TBL_TASK_TITLE, input.get_title());
         values.put(TBL_TASK_GROUP, input.get_group());
+        values.put(TBL_TASK_TITLE, input.get_title());
         values.put(TBL_TASK_DUEDATE, input.get_duedate().getTime());
         values.put(TBL_TASK_NOTE, input.get_note());
         values.put(TBL_TASK_PRIORITY, input.get_priority());
@@ -180,50 +179,90 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         DTO_Task task = new DTO_Task(String.valueOf(cursor.getInt(0)),
-                cursor.getString(1), Boolean.valueOf(cursor.getString(2)));
+                String.valueOf(cursor.getInt(1)),cursor.getString(2), new Date(cursor.getLong(3)),
+                cursor.getString(4), cursor.getInt(5), cursor.getString(6), cursor.getString(7));
 
         db.close();
         return task;
     }
 
-    public List<DTO_Group> getGroups() {
-        List<DTO_Group> groups = new ArrayList<DTO_Group>();
+    public List<DTO_Task> getTasks() {
+        List<DTO_Task> tasks = new ArrayList<DTO_Task>();
 
-        String selectQuery = "SELECT  * FROM " + TABLE_GROUP;
+        String selectQuery = "SELECT  * FROM " + TABLE_TASK;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
-                DTO_Group group = new DTO_Group();
-                group.setId(String.valueOf(cursor.getInt(0)));
-                group.setTitle(cursor.getString(1));
-                groups.add(group);
+                DTO_Task task = new DTO_Task();
+                task.set_id(String.valueOf(cursor.getInt(0)));
+                task.set_group(String.valueOf(cursor.getInt(1)));
+                task.set_title(cursor.getString(2));
+                task.set_duedate(new Date(cursor.getLong(3)));
+                task.set_note(cursor.getString(4));
+                task.set_priority(cursor.getInt(5));
+                task.set_collaborators(cursor.getString(6));
+                task.set_status(cursor.getString(7));
+                tasks.add(task);
             } while (cursor.moveToNext());
         }
 
         db.close();
-        return groups;
+        return tasks;
     }
 
-    public int updateContact(DTO_Group input) {
+    public List<DTO_Task> getTasks(String inputGroup) {
+        List<DTO_Task> tasks = new ArrayList<DTO_Task>();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_TASK +" WHERE "+TBL_TASK_GROUP+" == "+inputGroup;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                DTO_Task task = new DTO_Task();
+                task.set_id(String.valueOf(cursor.getInt(0)));
+                task.set_group(String.valueOf(cursor.getInt(1)));
+                task.set_title(cursor.getString(2));
+                task.set_duedate(new Date(cursor.getLong(3)));
+                task.set_note(cursor.getString(4));
+                task.set_priority(cursor.getInt(5));
+                task.set_collaborators(cursor.getString(6));
+                task.set_status(cursor.getString(7));
+                tasks.add(task);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        return tasks;
+    }
+
+    public int updateTask(DTO_Task input) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(TBL_GROUP_TITLE, input.getTitle());
+        values.put(TBL_TASK_GROUP, input.get_group());
+        values.put(TBL_TASK_TITLE, input.get_title());
+        values.put(TBL_TASK_DUEDATE, input.get_duedate().getTime());
+        values.put(TBL_TASK_NOTE, input.get_note());
+        values.put(TBL_TASK_PRIORITY, input.get_priority());
+        values.put(TBL_TASK_COLLABORATORS, input.get_collaborators());
+        values.put(TBL_TASK_STATUS, input.get_status());
 
-        int result = db.update(TABLE_GROUP, values, TBL_GROUP_ID + " == ?",
-                new String[]{String.valueOf(input.getId())});
+        int result = db.update(TABLE_TASK, values, TBL_TASK_ID + " == ?",
+                new String[]{String.valueOf(input.get_id())});
 
         db.close();
         return result;
     }
 
-    public int deleteContact(DTO_Group input) {
+    public int deleteContact(DTO_Task input) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(TABLE_GROUP, TBL_GROUP_ID + " == ?",
-                new String[]{String.valueOf(input.getId())});
+        int result = db.delete(TABLE_TASK, TBL_TASK_ID + " == ?",
+                new String[]{String.valueOf(input.get_id())});
 
         db.close();
         return result;

@@ -15,6 +15,29 @@ public class DTO_Task {
     private String _collaborators;
     private String _status;
 
+    public DTO_Task() {
+    }
+    public DTO_Task(String _group, String _title, Date _duedate, String _note, int _priority, String _collaborators, String _status) {
+        this._group = _group;
+        this._title = _title;
+        this._duedate = _duedate;
+        this._note = _note;
+        this._priority = _priority;
+        this._collaborators = _collaborators;
+        this._status = _status;
+    }
+
+    public DTO_Task(String _id, String _group, String _title, Date _duedate, String _note, int _priority, String _collaborators, String _status) {
+        this._id = _id;
+        this._group = _group;
+        this._title = _title;
+        this._duedate = _duedate;
+        this._note = _note;
+        this._priority = _priority;
+        this._collaborators = _collaborators;
+        this._status = _status;
+    }
+
     @Override
     public String toString() {
         return _title;
