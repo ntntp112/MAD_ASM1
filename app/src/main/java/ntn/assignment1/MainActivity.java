@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.sql.Date;
@@ -39,6 +40,16 @@ public class MainActivity extends Activity {
                 DTO_Group selectedGroup = (DTO_Group) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), TaskActivity.class);
                 intent.putExtra(Keys.groupID, selectedGroup.getId());
+                startActivity(intent);
+            }
+        });
+
+        //Add button
+        Button btn_add = (Button) findViewById(R.id.buttonAddGroup);
+        btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UCGroupActivity.class);
                 startActivity(intent);
             }
         });

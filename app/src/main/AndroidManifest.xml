@@ -16,5 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TaskActivity"></activity>
+        <activity android:name=".UCGroupActivity"></activity>
+        <activity android:name=".UCTaskActivity"></activity>
     </application>
 </manifest>
