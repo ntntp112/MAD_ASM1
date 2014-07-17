@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name="ntn.assignment1.TaskActivity" />
+        <activity android:name="ntn.assignment1.UCGroupActivity" />
+        <activity android:name="ntn.assignment1.UCTaskActivity" />
     </application>
 
 </manifest>

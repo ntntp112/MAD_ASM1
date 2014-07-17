@@ -34,9 +34,19 @@
                 qualifiers=""
                 type="layout" />
             <file
+                name="ucgroup"
+                path="C:\Users\NTN\AndroidStudioProjects\MAD_ASM1\app\src\main\res\layout\ucgroup.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="uctask"
+                path="C:\Users\NTN\AndroidStudioProjects\MAD_ASM1\app\src\main\res\layout\uctask.xml"
+                qualifiers=""
+                type="layout" />
+            <file
                 path="C:\Users\NTN\AndroidStudioProjects\MAD_ASM1\app\src\main\res\values\strings.xml"
                 qualifiers="" >
-                <string name="app_name" >MainActivity
+                <string name="app_name" >GoogleTask
                 </string>
             </file>
         </source>

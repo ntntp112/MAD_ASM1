@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     //GENERAL   
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "taskmanager";
 
     //TABLE_GROUP
@@ -33,8 +34,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String QUERY_CREATE_GROUP = "CREATE TABLE " + TABLE_GROUP + " ("
             + "    " + TBL_GROUP_ID + " Integer Primary Key   Autoincrement,"
             + "    " + TBL_GROUP_TITLE + " Text,"
-            + "    " + TBL_GROUP_TIMESTAMP + " Datetime Default Current_Timestamp"
-            + "    , \"tickfl\" INTEGER)";
+            + "    " + TBL_GROUP_TIMESTAMP + " Datetime Default Current_Timestamp)";
 
     //TABLE_TASK
     private static final String TABLE_TASK = "tbl_task";
@@ -57,8 +57,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + "    " + TBL_TASK_PRIORITY + " Integer,"
             + "    " + TBL_TASK_COLLABORATORS + " Text,"
             + "    " + TBL_TASK_STATUS + " Text,"
-            + "    " + TBL_TASK_TIMESTAMP + " Datetime Default Current_Timestamp"
-            + "    , \"tickfl\" INTEGER)";
+            + "    " + TBL_TASK_TIMESTAMP + " Datetime Default Current_Timestamp)";
 
 
     public DatabaseHandler(Context context) {
@@ -75,6 +74,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(QUERY_DROP_TASK);
         db.execSQL(QUERY_DROP_GROUP);
+        db.execSQL(QUERY_CREATE_GROUP);
+        db.execSQL(QUERY_CREATE_TASK);
     }
 
     //CRUD for GROUP
@@ -162,7 +163,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(TBL_TASK_COLLABORATORS, input.get_collaborators());
         values.put(TBL_TASK_STATUS, input.get_status());
 
-        db.insert(TABLE_TASK, null, values);
+        long result = db.insert(TABLE_TASK, null, values);
+        Log.d("Database add task: ", "Done..."+result);
+        Log.d("Task detail: ", input.get_group()+" "+input.get_title());
         db.close();
     }
 
