@@ -23,27 +23,32 @@ import java.util.List;
  */
 public class TaskActivity extends Activity {
     private Intent current_intent;
+    private List<DTO_Task> lstTasks;
+    private DatabaseHandler db;
+    private String groupID;
+    private ArrayAdapter adapterTask;
+    private ListView listViewTask;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tasks);
 
-        DatabaseHandler db = new DatabaseHandler(this);
+        db = new DatabaseHandler(this);
 
 
         TextView textGroup = (TextView) findViewById(R.id.textViewGroup);
 
         current_intent = getIntent();
-        String groupID = current_intent.getStringExtra(Keys.groupID);
+        groupID = current_intent.getStringExtra(Keys.groupID);
         textGroup.setText(db.getGroup(groupID).getTitle());
 
         Log.d("Reading: ", "Reading all tasks in group..");
-        List<DTO_Task> lstTasks = db.getTasks(groupID);
-        ListView listViewTask = (ListView) findViewById(R.id.listViewTasks);
+        lstTasks = db.getTasks(groupID);
+        listViewTask = (ListView) findViewById(R.id.listViewTasks);
         if (!lstTasks.isEmpty()) {
             Log.d("Reading: ", "tasks in group are "+lstTasks.size());
-            ArrayAdapter adapterTask = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, lstTasks);
+            adapterTask = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, lstTasks);
             listViewTask.setAdapter(adapterTask);
         }
 
@@ -62,12 +67,12 @@ public class TaskActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("Result: ", resultCode+"");
-        if(resultCode == Keys.addgroup_code) {
-            String addgroup = (String) data.getExtras().get(Keys.addgroup);
+        if(resultCode == Keys.addtask_code) {
+            String addgroup = (String) data.getExtras().get(Keys.addtask);
             if(addgroup.equals("true")){
-                lst_groups = db.getGroups();
-                adapterGroup = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, lst_groups);
-                listviewGroup.setAdapter(adapterGroup);
+                lstTasks = db.getTasks(groupID);
+                adapterTask = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, lstTasks);
+                listViewTask.setAdapter(adapterTask);
             }
         }
     }
